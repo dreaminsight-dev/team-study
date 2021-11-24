@@ -1,16 +1,18 @@
 <template>
-    <div class="modal-bg">
-        <div class="popup">
-            <div class="header">레이어 모달 팝업</div>
-            <div class="body">
-                이곳에 내용이 들어가고
-            </div>
-            <div class="footer">
-                <a href="#" class="btn btn-secondary" @click.prevent="close">닫기</a>
-                <a href="#" class="btn btn-primary" @click.prevent="accept">확인</a>
+    <teleport to="body">
+        <div class="modal-bg">
+            <div class="popup">
+                <div class="header">레이어 모달 팝업</div>
+                <div class="body">
+                    이곳에 내용이 들어가고
+                </div>
+                <div class="footer">
+                    <a href="#" class="btn btn-secondary" @click.prevent="close">닫기</a>
+                    <a href="#" class="btn btn-primary" @click.prevent="accept">확인</a>
+                </div>
             </div>
         </div>
-    </div>
+    </teleport>
 </template>
 
 <script setup>

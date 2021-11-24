@@ -1,4 +1,4 @@
-import { defineComponent, h, render } from 'vue'
+import { h, render } from 'vue'
 import toastComponent from './toastComponent'
 
 export default {
@@ -41,7 +41,7 @@ export default {
             }
 
             if (toast == null) {
-                toast = h(defineComponent(toastComponent), props)
+                toast = h(toastComponent, props)
                 render(toast, body)
             } else {
                 toast.component.props = props

@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import util from './js/util'
-import toast from '@/views/part4/plugin/toast'
+import toast from '@/components/plugin/toast'
 
 const app = createApp(App)
 

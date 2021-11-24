@@ -23,21 +23,21 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 
 const menu = ref([
-    {text: '파트 1', url: '/part1', subShow: false, sub: [
-        {text: 'index', url: ''},
-        {text: 'setup', url: '/setup'},
+    {text: 'Vue 2.x 비교', url: '/part1', subShow: false, sub: [
+        {text: 'Vue 2.x 형태', url: ''},
+        {text: 'Composition', url: '/setup'},
     ]},
-    {text: '파트 2', url: '/part2', subShow: false, sub: [
-        {text: 'index', url: ''},
-        {text: 'variables', url: '/variables'},
+    {text: 'Composition API', url: '/part2', subShow: false, sub: [
+        {text: 'SFC setup', url: ''},
+        {text: '반응형과 상태관리', url: '/variables'},
     ]},
     {text: '파트 3', url: '/part3', subShow: false, sub: [
         {text: 'index', url: ''},
     ]},
     {text: '파트 4', url: '/part4', subShow: false, sub: [
         {text: 'component', url: ''},
-        {text: 'slot', url: '/slot'},
         {text: 'component with plugin', url: '/pluginWithComponent'},
+        {text: 'slot', url: '/slot'},
     ]},
 ])
 let onIndex = -1
