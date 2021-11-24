@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, getCurrentInstance } from 'vue'
+import { defineProps, getCurrentInstance } from 'vue'
 
 const app = getCurrentInstance()
 const props = defineProps({
@@ -13,11 +13,18 @@ const props = defineProps({
     name: String,
 })
 
-const emits = defineEmits(['input'])
-
 function updateValue(evt) {
-    emits('update:modelValue', evt.target.value)
+    app.emit('update:modelValue', evt.target.value)
 }
+
+function focus() {
+    console.log(app)
+    app.ctx.$el.querySelector('input').focus()
+}
+
+import { defineExpose } from 'vue'
+
+defineExpose({focus})
 </script>
 
 <style scoped>

@@ -35,8 +35,7 @@ const menu = ref([
         {text: 'index', url: ''},
     ]},
     {text: '파트 4', url: '/part4', subShow: false, sub: [
-        {text: 'index', url: ''},
-        {text: 'component', url: '/component'},
+        {text: 'component', url: ''},
         {text: 'slot', url: '/slot'},
         {text: 'component with plugin', url: '/pluginWithComponent'},
     ]},
@@ -50,6 +49,7 @@ watch(route, (a, b) => {
 })
 
 const menuToggle = (index) => {
+    console.log(index)
     if (onIndex > -1 && onIndex != index) {
         menu.value[onIndex].subShow = false
     }
@@ -65,7 +65,7 @@ const menuToggle = (index) => {
 ul {list-style: none; display: flex; flex-direction: row;}
 ul li {
     text-align: center; border: 1px solid rgb(145, 145, 145);
-    height: 40px; box-sizing: border-box; width: 170px; position: relative;
+    height: 40px; box-sizing: border-box; width: 190px; position: relative;
 }
 ul li:not(:first-child) {border-left: 0px !important;}
 ul li a {display: block; width: 100%; height: 100%; line-height: 38px;}

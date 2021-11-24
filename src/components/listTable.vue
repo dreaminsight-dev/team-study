@@ -1,5 +1,5 @@
 <template>
-    <table class="table_basic">
+    <table class="table table-dark table-striped">
         <colgroup>
             <col v-if="checkAll" width="50" />
             <col v-for="item in tableHeader"

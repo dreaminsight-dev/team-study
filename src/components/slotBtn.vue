@@ -1,7 +1,9 @@
 <template>
-    <button type="button" v-bind="attrs" class="btn btn-primary" @click.prevent v-if="tag == 'button'">{{text}}</button>
-    <a href="#" :class="[`btn btn-${type}`]" v-bind="attrs" @click.prevent v-else>
-        {{text}}
+    <button type="button" v-bind="attrs" :class="[`btn btn-${type}`, (sm ? 'btn-sm' : '')]" @click.prevent v-if="tag == 'button'">
+        <slot></slot>
+    </button>
+    <a href="#" :class="[`btn btn-${type}`, (sm ? 'btn-sm' : '')]" v-bind="attrs" @click.prevent v-else>
+        <slot></slot>
     </a>
 </template>
 
@@ -10,10 +12,6 @@ import { useAttrs, defineProps, defineExpose, defineEmits } from 'vue'
 
 // 기존 props 와 똑같은 기능 수행
 const props = defineProps({
-    text: {
-        type: String,
-        default: 'click here!'
-    },
     tag: {
         type: String,
         default: 'a'
@@ -21,6 +19,10 @@ const props = defineProps({
     type: {
         type: String,
         default: 'primary'
+    },
+    sm: {
+        type: Boolean,
+        default: false,
     }
 })
 

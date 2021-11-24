@@ -7,8 +7,14 @@ import { defineProps, defineEmits, getCurrentInstance } from 'vue'
 
 const app = getCurrentInstance()
 const props = defineProps({
-    num: Number,
-    numFormat: String,
+    num: {
+        type: Number,
+        required: true,
+    },
+    numFormat: {
+        type: String,
+        default: '0'
+    },
     name: String,
 })
 

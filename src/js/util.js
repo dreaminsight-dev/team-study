@@ -248,7 +248,7 @@ Array.prototype.distinct = function(any) {
 
 export default {
     install(app, options) {
-        console.log(options)
+        // console.log(options)
 
         const util = {}
 
