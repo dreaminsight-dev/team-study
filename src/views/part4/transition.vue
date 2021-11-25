@@ -1,66 +1,106 @@
 <template>
-    <section>
-        <h1>기본 트랜지션</h1>
-        <div class="wrap">
-            <transition appear name="scale">
-                <div class="box" v-show="show"><span>1</span></div>
-            </transition>
-        </div>
-        <button type="button" @click="action">토글</button>
-    </section>
-    <section>
-        <h1>리스트 트랜지션</h1>
-        <transition-group name="list" class="wrap2" tag="ul">
-            <li class="box-small" v-for="i in list" :key="`${i}`">{{i}}</li>
-        </transition-group>
-        <button type="button" @click="shuffle">순서 바꾸기</button>
-    </section>
+    <div class="flex">
+        <section>
+            <h1>Basic transition</h1>
+            <div class="wrap">
+                <transition name="scale">
+                    <div class="box" v-show="show"><span>1</span></div>
+                </transition>
+            </div>
+            <slot-btn type="success" @click="action">토글</slot-btn>
+        </section>
+        <section>
+            <h1>Animation transition</h1>
+            <div class="wrap">
+                <transition name="ani">
+                    <div class="box" v-show="show2"><span>2</span></div>
+                </transition>
+            </div>
+            <slot-btn type="success" @click="action2">토글</slot-btn>
+        </section>
+        <section>
+            <h1>List transition</h1>
+            <transition-group name="list" class="wrap2" tag="ul">
+                <li class="box-small" v-for="i in list" :key="`${i}`">{{i}}</li>
+            </transition-group>
+            <slot-btn type="info" @click="shuffle">순서 바꾸기</slot-btn>
+        </section>
+        <section>
+            <h1>Transition hook</h1>
+
+            <teleport to="body">
+                <component :is="popup" @popupClose="closePopup" />
+            </teleport>
+
+            <p><slot-btn type="warning" @click="showModal">모달 창 보기</slot-btn></p>
+        </section>
+    </div>
 </template>
 
-<script>
-import { ref, getCurrentInstance, defineComponent } from 'vue'
+<script setup>
+import { ref, onMounted, markRaw, getCurrentInstance, defineComponent } from 'vue'
+import slotBtn from '@/components/slotBtn'
+import modal from '@/components/modal2'
 
-export default defineComponent({
-    data() {
-        return {
-            quest: 'quest'
-        }
-    },
-    setup(props, {attrs, emit, slots, expose}) {
-        let show = ref(true),
-            list = ref([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+const _ = require('lodash')
 
-        const action = () => {
-            show.value = !show.value
-        }
+let show = ref(true),
+    show2 = ref(true),
+    list = ref([]),
+    popup = ref(null)
 
-        const shuffle = () => {
-            let before = null, after = null
+for (let i = 1; i < 10; i++) {
+    list.value.push(i)
+}
 
-            for (let i = 0; i < 10; i++) {
-                let rnd = Math.floor(Math.random(0, list.value.length - 1) * 10)
+const delay = async (time) => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve()
+        }, time)
+    })
+}
 
-                before = list.value[i]
-                after = list.value[rnd]
-                list.value[i] = after
-                list.value[rnd] = before
-            }
-        }
+const action = () => {
+    show.value = !show.value
+}
 
-        return {
-            show, list,
-            action, shuffle
-        }
-    }
-})
+const action2 = () => {
+    show2.value = !show2.value
+}
+
+const shuffle = () => {
+    list.value = _.shuffle(list.value)
+}
+
+const showModal = () => {
+    popup.value = markRaw(modal)
+}
+
+const closePopup = () => {
+    popup.value = null
+}
 </script>
 
 <style>
-section {margin-bottom: 20px;}
+section {width: 50%; display: inline-block; margin-bottom: 20px;}
 .wrap {width: 300px; height: 300px; margin-bottom: 10px;}
 .box {border: 1px solid #000; box-sizing: border-box; width: 300px; height: 300px; display: flex; flex-direction: row;  align-items: center; justify-content: center;}
-.wrap2 {width: 100%; height: 100px; margin-bottom: 10px; display: flex; flex-direction: row;  align-items: center; justify-content: left;}
-.box-small {width: 100px; height: 100px; border: 1px solid #000; display: flex; flex-direction: row;  align-items: center; justify-content: center; margin-left: 5px;}
+.ani-enter-active {animation: bounce .5s}
+.ani-leave-active {animation: bounce .5s reverse;}
+@keyframes bounce {
+    0% {transform: scale(0)}
+    70% {transform: scale(1.3)}
+    100% {transform: scale(1)}
+}
+.wrap2 {
+    width: 360px; height: 360px; margin-bottom: 10px;
+    display: flex; flex-wrap: wrap; flex-direction: row;
+    align-items: baseline; justify-content: space-between;
+    padding: 0; margin: 0; list-style: none;
+}
+.box-small {width: 100px; height: 100px; border: 1px solid #000; display: flex; align-items: center; justify-content: center; transition: transform .2s ease}
+.box-small:hover {transform: scale(1.2)}
 .box-small:first-child {margin: 0;}
 .scale-enter-from,
 .scale-leave-to {
