@@ -1,5 +1,5 @@
 <template>
-    <h1>Part.4 Plugin with Component</h1>
+    <h1>Part.3 Plugin with Component</h1>
 
     <p>
         <slot-btn type="success" @click="showToast">토스트 메시지 보기</slot-btn>

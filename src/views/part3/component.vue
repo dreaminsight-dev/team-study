@@ -1,5 +1,5 @@
 <template>
-    <h1 class="mb-5">Part.4 컴포넌트</h1>
+    <h1 class="mb-5">Part.3 컴포넌트</h1>
 
     <p style="display: flex; flex-direction: row; align-items: center;">
         <text-field ref="input" v-model="text" @input="modelTest" />

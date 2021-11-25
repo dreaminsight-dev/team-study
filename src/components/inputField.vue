@@ -5,7 +5,7 @@
 
         <textarea
             ref="textarea"
-            :class="['block', 'form-control form-control-sm', {block: block}]"
+            :class="['block', 'form-control', {'form-control-sm': sm}, {block: block}]"
             :style="[{height: height ? height + 'px' : false}]"
             :rows="rows"
             :placeholder="placeholder"
@@ -19,7 +19,7 @@
         </textarea>
         <input
             ref="input"
-            :class="['text block form-control form-control-sm', {block: block}, {'text-right': textRight}]"
+            :class="['text block form-control', {'form-control-sm': sm}, {block: block}, {'text-right': textRight}]"
             :style="[{width: width ? width + 'px' : false}]"
             :type="type"
             :placeholder="placeholder"
@@ -96,6 +96,10 @@ const props = defineProps({
     tabIndex: [String, Number],     // tabindex
     maxLength: [String, Number],    // 최대 입력 가능한 글자 수 (type=text 에만 적용)
     readonly: Boolean,              // readonly Boolean: false
+    sm: {
+        type: Boolean,
+        default: false,
+    }
 })
 
 let isValidate = ref(true)
@@ -272,6 +276,11 @@ const check = () => {
 }
 
 const resetForm = () => {
+    message.value = ''
+    isValidate.value = true
+    checkPass.value = true
+    errorTransition.value = false
+
     ins.emit('update:modelValue', '')
 }
 
@@ -297,4 +306,6 @@ defineExpose({
 .input_wrap {display: inline-block; vertical-align: top;}
 .input_wrap.block {display: block !important;}
 textarea {resize: none;}
+.description {font-size: 12px; color: rgb(104, 104, 104);}
+.description.error {color: #f16868}
 </style>

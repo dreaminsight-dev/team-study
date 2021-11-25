@@ -15,7 +15,9 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, defineExpose, getCurrentInstance } from 'vue'
+
+const app = getCurrentInstance()
 
 const props = defineProps({
     width: {
@@ -25,6 +27,18 @@ const props = defineProps({
     list: {
         type: Array,
         default: [],
+    },
+    expose: {
+        type: Array,
+        default: [],
     }
+})
+
+const getComponent = () => {
+    console.log(app)
+}
+
+defineExpose({
+    getComponent
 })
 </script>

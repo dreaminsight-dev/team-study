@@ -31,13 +31,15 @@ const menu = ref([
         {text: 'SFC setup', url: ''},
         {text: '반응형과 상태관리', url: '/variables'},
     ]},
-    {text: '파트 3', url: '/part3', subShow: false, sub: [
-        {text: 'index', url: ''},
+    {text: 'Plugin & Component', url: '/part3', subShow: false, sub: [
+        {text: 'Plugin', url: '/plugin'},
+        {text: 'Component', url: '/component'},
+        {text: 'Component with Plugin', url: '/pluginWithComponent'},
+        {text: 'Slot', url: '/slot'},
     ]},
-    {text: '파트 4', url: '/part4', subShow: false, sub: [
-        {text: 'component', url: ''},
-        {text: 'component with plugin', url: '/pluginWithComponent'},
-        {text: 'slot', url: '/slot'},
+    {text: '숙달 과정', url: '/part4', subShow: false, sub: [
+        {text: 'Component 더 깊이 보기', url: '/component'},
+        {text: 'Transition', url: '/transition'},
     ]},
 ])
 let onIndex = -1
@@ -49,7 +51,6 @@ watch(route, (a, b) => {
 })
 
 const menuToggle = (index) => {
-    console.log(index)
     if (onIndex > -1 && onIndex != index) {
         menu.value[onIndex].subShow = false
     }

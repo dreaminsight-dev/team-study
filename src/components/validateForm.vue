@@ -14,6 +14,11 @@ let checkState = true
 let firstElm = null
 
 const validate = () => {
+    // const slot = slots.default()
+
+    // console.log(slot[0].children[0].type)
+    // console.log(ins)
+
     checkState = true
     firstElm = null
 
@@ -34,22 +39,30 @@ const resetForm = () => {
 }
 
 const traverse = (el, flag = 'dom') => {
-    componentCheck(el, flag)
+    if (Array.isArray(el.children)) {
+        const len = el.children.length
 
-    const len = el.children.length
+        if (len > 0) {
+            const vueNodes = el.children
 
-    if (len > 0) {
-        const vueNodes = el.children
-
-        // vue node 전체(chilren)을 탐색 하여 chidren이 또 있는 경우 재귀한다.
-        for (let i = 0; i < len; i++) {
-            if (!!vueNodes[i].children) {
-                if (vueNodes[i].children.length > 0) {
-                    traverse(vueNodes[i], flag)
+            // vue node 전체(chilren)을 탐색 하여 chidren이 또 있는 경우 재귀한다.
+            for (let i = 0; i < len; i++) {
+                if (vueNodes[i].component !== null) {
+                    traverse(vueNodes[i].component.subTree, flag)
                 }
-            } else {
-                componentCheck(vueNodes[i], flag)
+
+                if (!!vueNodes[i].children) {
+                    if (vueNodes[i].children.length > 0) {
+                        traverse(vueNodes[i], flag)
+                    }
+                } else {
+                    componentCheck(vueNodes[i], flag)
+                }
             }
+        }
+    } else if (!!el.component) {
+        if (el.component.subTree !== undefined) {
+            traverse(el.component.subTree, flag)
         }
     }
 }
@@ -57,7 +70,7 @@ const traverse = (el, flag = 'dom') => {
 const componentCheck = async (el, flag) => {
     const vueDom = [
         'inputField', 'numberFormat', 'selectBox', 'switchButton', 'checkButton',
-        'orgSelect', 'datePicker', 'findPostCode', 'attachFile'
+        'orgSelect', 'datePicker', 'findPostCode', 'attachFile', 'slotsTable'
     ]
 
     // 컴포넌트인지 체크 후 필요한 처리를 한다.

@@ -7,11 +7,13 @@ const routes = [
     {path: '/part2', name: 'part2', component: () => import('@/views/part2/index')},
     {path: '/part2/variables', name: 'variables', component: () => import('@/views/part2/variables')},
 
-    {path: '/part3', name: 'part3', component: () => import('@/views/part3/index')},
+    {path: '/part3/plugin', name: 'part3/plugin', component: () => import('@/views/part3/plugin')},
+    {path: '/part3/component', name: 'part3/component', component: () => import('@/views/part3/component')},
+    {path: '/part3/slot', name: 'part3/slot', component: () => import('@/views/part3/slot')},
+    {path: '/part3/pluginWithComponent', name: 'part3/pluginWithComponent', component: () => import('@/views/part3/pluginWithComponent')},
 
-    {path: '/part4', name: 'part4', component: () => import('@/views/part4/index')},
-    {path: '/part4/slot', name: 'part4/slot', component: () => import('@/views/part4/slot')},
-    {path: '/part4/pluginWithComponent', name: 'part4/pluginWithComponent', component: () => import('@/views/part4/pluginWithComponent')},
+    {path: '/part4/component', name: 'part4/component', component: () => import('@/views/part4/component')},
+    {path: '/part4/transition', name: 'part4/transition', component: () => import('@/views/part4/transition')},
 ]
 
 const router = createRouter({

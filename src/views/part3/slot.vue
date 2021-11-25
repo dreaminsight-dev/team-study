@@ -1,5 +1,5 @@
 <template>
-    <h1>Part.4 Slots 사용 방법</h1>
+    <h1>Part.3 Slots 사용 방법</h1>
 
     <div style="width: 700px;">
         <slots-table>
@@ -44,47 +44,11 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import useCommon from '@/js/common'
 import slotBtn from '@/components/slotBtn'
 import slotsTable from '@/components/slotsTable'
-import axios from 'axios'
 
-let page = ref(1)
-let list = ref([]), total = ref(0)
-
-const getList = async () => {
-    const json = await axios.get('https://adreport-api.programrush.co.kr/user/getUserList', {
-        params: {
-            page: page.value,
-            pageSize: 20,
-            srchStart: '',
-            srchEnd: '',
-            srchUseYN: '',
-            srchTarget: '',
-            srchText: ''
-        }
-    }).then(res => res.data)
-
-    if (json.result == 'success') {
-        if (json.data.length == 0) {
-
-        } else {
-            total.value = parseInt(json.total)
-            list.value = json.data
-        }
-    }
-}
-
-const movePage = (flag) => {
-    if (flag == 'next') {
-        page.value++
-    } else {
-        if (page.value > 1) {
-            page.value--
-        }
-    }
-
-    getList()
-}
+let { page, list, total, getList, movePage } = {...useCommon()}
 
 getList()
 </script>
