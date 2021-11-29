@@ -7,6 +7,7 @@
                     이곳에 내용이 들어가고
                 </div>
                 <div class="footer">
+                    <a href="#" class="btn btn-secondary" @click.prevent="checkEmit">emit</a>
                     <a href="#" class="btn btn-secondary" @click.prevent="close">닫기</a>
                     <a href="#" class="btn btn-primary" @click.prevent="accept">확인</a>
                 </div>
@@ -16,16 +17,20 @@
 </template>
 
 <script setup>
-import { getCurrentInstance } from 'vue';
+import { defineEmits } from 'vue';
 
-const app = getCurrentInstance()
+const emit = defineEmits(['popupClose'])
 
 const close = () => {
-    app.emit('popupClose')
+    emit('popupClose')
 }
 
 function accept() {
-    app.emit('popupClose')
+    emit('popupClose')
+}
+
+function checkEmit() {
+    emit('update')
 }
 </script>
 

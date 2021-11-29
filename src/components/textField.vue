@@ -5,16 +5,17 @@
 </template>
 
 <script setup>
-import { defineProps, getCurrentInstance } from 'vue'
+import { defineEmits, defineProps, getCurrentInstance } from 'vue'
 
 const app = getCurrentInstance()
+const emit = defineEmits(['update:modelValue'])
 const props = defineProps({
     modelValue: [String, Number],
     name: String,
 })
 
 function updateValue(evt) {
-    app.emit('update:modelValue', evt.target.value)
+    emit('update:modelValue', evt.target.value)
 }
 
 function focus() {

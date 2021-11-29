@@ -6,11 +6,12 @@
         </template>
     </ul>
 
-    <p ref="num">{{num}}</p>
+    <p class="number" ref="num">{{num}}</p>
 
     <p>
-        <button type="button" @click="shuffle">번호 섞기</button>
-        <button type="button" @click="change">변화보기</button>
+        <a href="#" class="btn btn-secondary" @click.prevent="shuffle">번호 섞기</a>
+        &nbsp;
+        <a href="#" class="btn btn-primary" @click.prevent="change">변화보기</a>
     </p>
 </template>
 
@@ -60,8 +61,13 @@ export default {
                 this.list[rnd] = before
             }
 
+            this.num++
+
+            console.log(document.querySelector('.number').textContent)
+
             this.$nextTick(() => {
                 console.log('nextTick')
+                console.log(document.querySelector('.number').textContent)
             })
         },
         change() {

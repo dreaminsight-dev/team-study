@@ -271,6 +271,14 @@ export default {
             return num
         }
 
+        util.delay = async (time) => {
+            return await new Promise(resolve => {
+                setTimeout(() => {
+                    resolve()
+                }, time)
+            })
+        }
+
         app.config.globalProperties.$util = util
         app.provide('util', util)
     }

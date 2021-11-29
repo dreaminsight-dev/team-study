@@ -1,5 +1,5 @@
 <template>
-    <h1>Part.1 Setup (Vue 3.x)</h1>
+    <h1>Part.1 Composition API Setup (Vue 3.x)</h1>
     <ul>
         <template v-for="num in list" :key="num">
             <li>{{num}}</li>
@@ -9,8 +9,9 @@
     <p>{{num}}</p>
 
     <p>
-        <button type="button" @click="shuffle">번호 섞기</button>
-        <button type="button" @click="change">변화 보기</button>
+        <a href="#" class="btn btn-secondary" @click.prevent="shuffle">번호 섞기</a>
+        &nbsp;
+        <a href="#" class="btn btn-primary" @click.prevent="change">변화보기</a>
     </p>
 </template>
 
@@ -38,10 +39,12 @@ export default {
         })
 
         onBeforeUpdate(() => {
+            console.log(num)
             console.log('onBeforeUpdate')
         })
 
         onUpdated(() => {
+            console.log(num)
             console.log('onUpdated')
         })
 
@@ -66,6 +69,8 @@ export default {
                 list.value[i] = after
                 list.value[rnd] = before
             }
+
+            num++
 
             nextTick(() => {
                 console.log('nextTick')

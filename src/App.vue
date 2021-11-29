@@ -40,6 +40,7 @@ const menu = ref([
     {text: '숙달 과정', url: '/part4', subShow: false, sub: [
         {text: 'Component 더 깊이 보기', url: '/component'},
         {text: 'Transition', url: '/transition'},
+        {text: 'Game', url: '/gameLayout'},
     ]},
 ])
 let onIndex = -1
@@ -63,7 +64,7 @@ const menuToggle = (index) => {
 
 <style scoped>
 #content {padding: 20px;}
-ul {list-style: none; display: flex; flex-direction: row;}
+ul {list-style: none; display: flex; flex-direction: row; z-index: 100;}
 ul li {
     text-align: center; border: 1px solid rgb(145, 145, 145);
     height: 40px; box-sizing: border-box; width: 190px; position: relative;

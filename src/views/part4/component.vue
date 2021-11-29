@@ -1,31 +1,23 @@
 <template>
     <h1>Part.4 Component 더 깊이 보기</h1>
 
-    <v-form style="width: 700px;" ref="form">
-        <slots-table>
-            <template v-slot:head>
+    <v-form style="width: 1000px;" ref="form">
+        <slots-table dark footer-slot :items="list" :header="header">
+            <template v-slot="{item, index}">
                 <tr>
-                    <th>No.</th>
-                    <th>이름</th>
-                    <th>연락처</th>
-                    <th>이메일</th>
-                    <th>부서</th>
-                    <th>직책</th>
+                    <td>{{index}}</td>
+                    <td>{{item.memIdx}}</td>
+                    <td>{{item.memName}}</td>
+                    <td>{{item.hp.phoneNumber()}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.orgName}}</td>
+                    <td>{{item.jobName}}</td>
                 </tr>
             </template>
 
-            <tr :key="`td${i}`" v-for="(item, i) in list">
-                <td>{{item.memIdx}}</td>
-                <td>{{item.memName}}</td>
-                <td>{{item.hp.phoneNumber()}}</td>
-                <td>{{item.email}}</td>
-                <td>{{item.orgName}}</td>
-                <td>{{item.jobName}}</td>
-            </tr>
-
-            <template v-slot:foot>
+            <template v-slot:footer>
                 <tr>
-                    <th colspan="6" class="text-end">
+                    <th colspan="7" class="text-end">
                         총 {{total}}명&nbsp;&nbsp;
 
                         <input-field sm placeholder="숫자입력" :validate="[v => !!v || '숫자를 입력해주요.']" v-model="movePageNum" />
@@ -56,13 +48,23 @@ import { ref } from 'vue'
 import vForm from '@/components/validateForm'
 import slotBtn from '@/components/slotBtn'
 import inputField from '@/components/inputField'
-import slotsTable from '@/components/slotsTable'
+import slotsTable from '@/components/slotsTable2'
 
 let text1 = ref('')
 let text2 = ref('')
 let form = ref(null)
 let rule = [v => !!v || '텍스트를 입력하세요!']
 let movePageNum = ref('')
+const header = [
+    {text: 'index'},
+    {text: 'No'},
+    {text: '이름'},
+    {text: '연락처'},
+    {text: '이메일'},
+    {text: '부서'},
+    {text: '직책'},
+]
+const foot = [{text: ''}]
 
 const formCheck = () => {
     form.value.validate()

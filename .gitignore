@@ -3,6 +3,7 @@ node_modules
 /dist
 study.txt
 modal2.vue
+game.vue
 
 # local env files
 .env.local

@@ -41,9 +41,7 @@
 </template>
 
 <script setup>
-import {ref, watch, computed, defineProps, onMounted, defineExpose, getCurrentInstance} from 'vue'
-
-const ins = getCurrentInstance()
+import {ref, watch, computed, onMounted, defineProps, defineEmits, defineExpose } from 'vue'
 
 const props = defineProps({
     modelValue: [String, Number],   // model
@@ -101,6 +99,7 @@ const props = defineProps({
         default: false,
     }
 })
+const emit = defineEmits()
 
 let isValidate = ref(true)
 let checkPass = ref(false)
@@ -166,7 +165,7 @@ const updateValue = (evt = null) => {
         v = evt.target.value
     }
 
-    ins.emit('update:modelValue', v)
+    emit('update:modelValue', v)
 }
 
 const getPattern = (type = '') => {
@@ -281,7 +280,7 @@ const resetForm = () => {
     checkPass.value = true
     errorTransition.value = false
 
-    ins.emit('update:modelValue', '')
+    emit('update:modelValue', '')
 }
 
 onMounted(() => {

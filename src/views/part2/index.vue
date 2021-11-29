@@ -6,19 +6,21 @@
         </template>
     </ul>
 
-    <p><button type="button" @click="shuffle">번호 섞기</button></p>
+    <div class="number">{{num}}</div>
+
+    <p><a href="#" class="btn btn-primary" @click.prevent="shuffle">번호 섞기</a></p>
 </template>
 
 <script setup>
 import {
-    ref,
     onBeforeMount, onMounted,
     onBeforeUpdate, onUpdated,
     onBeforeUnmount, onUnmounted,
     nextTick
 } from 'vue'
 
-let list = ref([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+let list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+let num = 0
 
 console.log('setup')
 
@@ -50,13 +52,15 @@ const shuffle = () => {
     let before = null, after = null
 
     for (let i = 0; i < 10; i++) {
-        let rnd = Math.floor(Math.random(0, list.value.length - 1) * 10)
+        let rnd = Math.floor(Math.random(0, list.length - 1) * 10)
 
-        before = list.value[i]
-        after = list.value[rnd]
-        list.value[i] = after
-        list.value[rnd] = before
+        before = list[i]
+        after = list[rnd]
+        list[i] = after
+        list[rnd] = before
     }
+
+    num++
 
     nextTick(() => {
         console.log('nextTick')

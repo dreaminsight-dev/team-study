@@ -7,12 +7,12 @@
     <p>lucky: {{lucky}}</p>
 
     <p>
-        <button type="button" @click="changeApple">apple 바꾸기</button>
-        <button type="button" @click="changeBall">ball 바꾸기</button>
-        <button type="button" @click="changeCoffee">coffee 바꾸기</button>
-        <button type="button" @click="addArray">ball 배열 추가</button>
-        <button type="button" @click="changeRefs">toRefs</button>
-        <button type="button" @click="showVuex">VUEX 확인</button>
+        <a ref="#" class="btn btn-success" @click.prevent="changeApple">apple 바꾸기</a>&nbsp;
+        <a ref="#" class="btn btn-primary" @click.prevent="changeBall">ball 바꾸기</a>&nbsp;
+        <a ref="#" class="btn btn-info" @click.prevent="changeCoffee">coffee 바꾸기</a>&nbsp;
+        <a ref="#" class="btn btn-secondary" @click.prevent="addArray">ball 배열 추가</a>&nbsp;
+        <a ref="#" class="btn btn-warning" @click.prevent="changeRefs">toRefs</a>&nbsp;
+        <a ref="#" class="btn btn-danger" @click.prevent="showVuex">VUEX 확인</a>
     </p>
 </template>
 
@@ -26,6 +26,7 @@ let coffee = reactive({
     ice: 'is ice'
 })
 let num = 0
+let ballBefore = ref([])
 
 watch(apple, (a, b) => {
     console.log('watch apple', a, b)
@@ -36,12 +37,23 @@ watch([() => ball.value[0], () => ball.value[1]], (a, b) => {
     console.log('watch ball', a, b)
 })
 
+// 배열이 추가 되거나 삭제되는 상태는 감지가 되지 않는다.
+watch(() => ball.value.length, (a, b) => {
+    console.log('ball watch before', ballBefore.value)
+    console.log('ball watch after', ball.value)
+})
+
 watch([() => coffee.hot, () => coffee.ice], (a, b) => {
     console.log('watch coffee', a, b)
 })
 
+const arrayChanged = computed(() => {
+    if (ball.value.length) {
+        console.log('computed', ball.value)
+    }
+})
+
 const changed = computed(() => {
-    // ball.value[0], ball.value[1], coffee.hot, ball.value.length
     let ballValue0 = ball.value[0]
     let ballValue1 = ball.value[1]
     let isHot = coffee.hot
@@ -52,8 +64,6 @@ const changed = computed(() => {
     }
 
     return num
-
-    // return isHot != 'is hot' ? ++num : num
 })
 
 const changeApple = () => {
@@ -83,6 +93,8 @@ const changeCoffee = () => {
 }
 
 const addArray = () => {
+    ballBefore.value = JSON.parse(JSON.stringify(ball.value))
+
     ball.value.push(0)
 }
 

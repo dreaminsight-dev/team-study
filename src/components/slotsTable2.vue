@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-dark table-striped">
+    <table :class="['table table-striped', {'table-dark': props.dark}]" @click="emit('table-click')">
         <colgroup>
             <col v-if="checkAll" width="50" />
             <col v-for="item in tableHeader"
@@ -22,8 +22,9 @@
                 </th>
             </tr>
         </thead>
-        <tbody :class="{'no-hover-bg': noHoverBg}" v-if="items.length > 0">
-            <slot name="items" v-for="(item, index) in props.items" :props="item" :index="index"></slot>
+
+        <tbody v-if="items.length > 0">
+            <slot v-for="(item, index) in props.items" :item="item" :index="index"></slot>
         </tbody>
         <tbody v-else>
             <tr>
@@ -32,11 +33,23 @@
                 </td>
             </tr>
         </tbody>
+
+        <tfoot v-if="props.footer.length > 0">
+            <tr>
+                <th v-for="(item, i) in props.footer" :key="`footer${i}`">
+                    {{item.text}}
+                </th>
+            </tr>
+        </tfoot>
+        <tfoot v-else-if="footerSlot">
+
+            <slot name="footer"></slot>
+        </tfoot>
     </table>
 </template>
 
 <script setup>
-import {ref, watch, defineProps} from 'vue'
+import {ref, watch, useSlots, defineProps, defineEmits, onMounted } from 'vue'
 
 const props = defineProps({
     header: {                       // 목록 최상단 라벨링 Array:[{text: string, width: int, sort: boolean, target: string(sort target)}] *
@@ -48,10 +61,6 @@ const props = defineProps({
         required: true
     },
     emptyText: String,              // 목록이 없을 경우 표시할 텍스트 String:''
-    noHoverBg: {                    // 설정시 라인 색상이 적용 되지 않음
-        type: Boolean,
-        default: false
-    },
     width: {
         type: String,
         default: ''
@@ -59,14 +68,25 @@ const props = defineProps({
     checkAll: {                     // 리스트 체크 여부 Boolean:false
         type: Boolean,
         default: false
+    },
+    footer: {
+        type: Array,
+        default: [],
+    },
+    dark: {
+        type: Boolean,
+        default: false,
     }
 })
-const listTableCheck = ref(null)
+const emit = defineEmits(['checked', 'sort-change', 'table-click'])
+const slots = useSlots()
 
-let checked = ref(false)
-let colspan = ref(0)
-let noDataText = ref('데이터가 없습니다.')
-let tableHeader = ref([])
+const listTableCheck = ref(null)
+let checked = ref(false),
+    colspan = ref(0),
+    noDataText = ref('데이터가 없습니다.'),
+    tableHeader = ref([]),
+    footerSlot = ref(typeof slots.footer == 'function')
 
 watch(() => props.header, () => {
     setHeader()
@@ -90,12 +110,12 @@ const setHeader = () => {
 }
 
 const checkAllEvent = (evt) => {
-    $emit('checked', evt.target.checked)
+    emit('checked', evt.target.checked)
 }
 
 const sortingField = (target, order, index) => {
-    $set(tableHeader.value[index], 'order', (order === 'desc') ? 'asc' : 'desc')
-    $emit('@sortChange', target, (order === 'desc') ? 'asc' : 'desc')
+    tableHeader.value[index].order = (order === 'desc') ? 'asc' : 'desc'
+    emit('sort-change', target, (order === 'desc') ? 'asc' : 'desc')
 }
 
 setHeader()
@@ -105,6 +125,9 @@ colspan.value = props.header.length + (props.checkAll ? 1 : 0)
 if (props.emptyText) {
     noDataText.value = props.emptyText
 }
+
+onMounted(() => {
+})
 </script>
 
 <style scoped>

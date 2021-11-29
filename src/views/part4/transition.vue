@@ -13,17 +13,18 @@
             <h1>Animation transition</h1>
             <div class="wrap">
                 <transition name="ani">
-                    <div class="box" v-show="show2"><span>2</span></div>
+                    <div class="ani-box" v-show="show2" @click="show2 = false"><span>2</span></div>
                 </transition>
             </div>
-            <slot-btn type="success" @click="action2">토글</slot-btn>
+            <slot-btn type="danger" @click="action2">토글</slot-btn>
         </section>
         <section>
             <h1>List transition</h1>
-            <transition-group name="list" class="wrap2" tag="ul">
-                <li class="box-small" v-for="i in list" :key="`${i}`">{{i}}</li>
+            <transition-group :name="transType" class="wrap2" tag="ul">
+                <li class="box-small" v-for="(num, i) in list" :key="`${num}`" @click="changeOne(i)">{{num}}</li>
             </transition-group>
-            <slot-btn type="info" @click="shuffle">순서 바꾸기</slot-btn>
+            <slot-btn type="info" @click="shuffle">순서 한꺼번에 바꾸기</slot-btn>&nbsp;
+            <slot-btn type="primary" @click="otherChange">순서 하나씩 바꾸기</slot-btn>
         </section>
         <section>
             <h1>Transition hook</h1>
@@ -38,16 +39,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, markRaw, getCurrentInstance, defineComponent } from 'vue'
+import { ref, inject, markRaw,  } from 'vue'
 import slotBtn from '@/components/slotBtn'
 import modal from '@/components/modal2'
 
+const util = inject('util')
 const _ = require('lodash')
 
 let show = ref(true),
     show2 = ref(true),
     list = ref([]),
-    popup = ref(null)
+    popup = ref(null),
+    transType = ref('list')
 
 for (let i = 1; i < 10; i++) {
     list.value.push(i)
@@ -70,7 +73,31 @@ const action2 = () => {
 }
 
 const shuffle = () => {
+    transType.value = 'list'
     list.value = _.shuffle(list.value)
+}
+
+const changeOne = (index) => {
+    let num = list.value[index]
+    let changeIndex = -1
+
+    do {
+        changeIndex = _.random(0, 8)
+    } while (changeIndex == index)
+
+    let changeNum = list.value[changeIndex]
+
+    list.value[index] = changeNum
+    list.value[changeIndex] = num
+}
+
+const otherChange = async () => {
+    transType.value = 'list-fast'
+
+    for (let i = 0; i < list.value.length; i++) {
+        changeOne(i)
+        await util.delay(220)
+    }
 }
 
 const showModal = () => {
@@ -85,13 +112,18 @@ const closePopup = () => {
 <style>
 section {width: 50%; display: inline-block; margin-bottom: 20px;}
 .wrap {width: 300px; height: 300px; margin-bottom: 10px;}
-.box {border: 1px solid #000; box-sizing: border-box; width: 300px; height: 300px; display: flex; flex-direction: row;  align-items: center; justify-content: center;}
-.ani-enter-active {animation: bounce .5s}
-.ani-leave-active {animation: bounce .5s reverse;}
+.box {border: 1px solid #000; box-sizing: border-box; width: 300px; height: 300px; display: flex; flex-direction: row;  align-items: center; justify-content: center; font-size: 100px;}
+.ani-box {
+    box-sizing: border-box; width: 300px; height: 300px;
+    display: flex; flex-direction: row;  align-items: center; justify-content: center;
+    background-color: rgb(74, 110, 211); color: #fff; font-size: 100px;
+}
+.ani-enter-active {animation: bounce .5s ease-out}
+.ani-leave-active {animation: bounce .5s ease-in reverse;}
 @keyframes bounce {
-    0% {transform: scale(0)}
-    70% {transform: scale(1.3)}
-    100% {transform: scale(1)}
+    0% {transform: scale(0); background-color: rgb(202, 47, 47);}
+    80% {transform: scale(1.3)}
+    100% {transform: scale(1);}
 }
 .wrap2 {
     width: 360px; height: 360px; margin-bottom: 10px;
@@ -112,4 +144,5 @@ section {width: 50%; display: inline-block; margin-bottom: 20px;}
     transition: all 0.3s ease;
 }
 .list-move {transition: transform .5s ease}
+.list-fast-move {transition: transform .2s ease}
 </style>
