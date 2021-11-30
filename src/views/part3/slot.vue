@@ -13,7 +13,7 @@
                     <th>직책</th>
                 </tr>
             </template>
-            <template v-slot>
+            <template v-slot:default>
                 <tr :key="`td${i}`" v-for="(item, i) in list">
                     <td>{{item.memIdx}}</td>
                     <td>{{item.memName}}</td>

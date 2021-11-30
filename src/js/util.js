@@ -2,6 +2,16 @@ window.alertModal = function(msg) {
     alert(msg)
 }
 
+// 소수점 지정 자리수 이하 버림
+function cutDot(v, cut) {
+    let num = parseFloat(v.toString().replace(/,/gi, ''))
+
+    if (cut > 0) {
+        return Math.abs(num.toFixed(cut))
+    }
+
+    return num
+}
 Number.prototype.cutDot = function(cut = 0) {
     return cutDot(this, cut)
 }
@@ -258,17 +268,6 @@ export default {
 
         util.copy = (any) => {
             return JSON.parse(JSON.stringify(any))
-        }
-
-        // 소수점 지정 자리수 이하 버림
-        function cutDot(v, cut) {
-            let num = parseFloat(v.toString().replace(/,/gi, ''))
-
-            if (cut > 0) {
-                return Math.abs(num.toFixed(cut))
-            }
-
-            return num
         }
 
         util.delay = async (time) => {

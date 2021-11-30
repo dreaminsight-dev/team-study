@@ -11,7 +11,8 @@
         <a ref="#" class="btn btn-primary" @click.prevent="changeBall">ball 바꾸기</a>&nbsp;
         <a ref="#" class="btn btn-info" @click.prevent="changeCoffee">coffee 바꾸기</a>&nbsp;
         <a ref="#" class="btn btn-secondary" @click.prevent="addArray">ball 배열 추가</a>&nbsp;
-        <a ref="#" class="btn btn-warning" @click.prevent="changeRefs">toRefs</a>&nbsp;
+        <a ref="#" class="btn btn-warning" @click.prevent="changeState">state 변경</a>&nbsp;
+        <a ref="#" class="btn btn-warning" @click.prevent="changeRefs">state toRefs</a>&nbsp;
         <a ref="#" class="btn btn-danger" @click.prevent="showVuex">VUEX 확인</a>
     </p>
 </template>
@@ -94,53 +95,54 @@ const changeCoffee = () => {
 
 const addArray = () => {
     ballBefore.value = JSON.parse(JSON.stringify(ball.value))
-
     ball.value.push(0)
 }
 
-// toRefs 는 reactive 선언된 객체의 인자를 ref 형태로 변환하여 연결한다.
+/*
+    reactive로 선언된 변수를 구조 분해를 하여 사용 할 경우
+    각각의 property는 반응형으로 동작하지 않는다.
+    각각의 속성을 반응형으로 구조 분해 하여 사용 하고 싶다면
+    toRefs로 컨버트 후 구조 분해하여 사용 가능
+*/
 const state = reactive({
     foo: 1,
     bar: 2
 })
 
-const refState = toRefs(state)
-
-console.log('origin', state.foo, state.bar)
-console.log('toRefs', refState.foo.value, refState.bar.value)
-
-const changeRefs = () => {
+const changeState = () => {
     state.foo++
-    refState.bar.value++
+    state.bar++
 
     console.log('origin', state.foo, state.bar)
-    console.log('toRefs', refState.foo.value, refState.bar.value)
+
+    let { foo, bar } = state
+
+    console.log('ref', foo, bar)
+
+    return toRefs(state)
 }
 
+const changeRefs = () => {
+    const refState = changeState()
+    let { foo, bar } = refState
 
-/*
-import useCommon from '@/js/common'
+    foo.value++
+    bar.value++
 
-const { howToUseToRefs } = useCommon()
-const st = howToUseToRefs()
-
-howToUseToRefs.foo = 10
-howToUseToRefs.bar = 11
-
-console.log(st.foo.value, st.bar.value)
-
-st.foo.value = 2
-st.bar.value = 3
-
-console.log(st.foo.value, st.bar.value)
-*/
+    console.log('toRefs', foo.value, bar.value)
+}
 
 import { useStore } from 'vuex'
 
 const store = useStore()
 
 const showVuex = () => {
-    store.commit('setLucky', 77)
+    const { state, getters, commit  } = {...store}
+
+    commit('setLucky', 77)
+    console.log('getters', getters.getLucky)
+    console.log('store.state', store.state.lucky)
+    console.log('state', state.lucky)
 }
 
 const lucky = computed(() => store.state.lucky)

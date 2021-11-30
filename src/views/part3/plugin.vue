@@ -1,14 +1,14 @@
 <template>
     <h1>Part.3 플러그인 (Plugin)</h1>
     <p>
-        <button type="button" @click="showAlert">Alert 보기</button>
-        <button type="button" @click="otherAlert">다른 Alert 보기</button>
+        <button type="button" class="btn btn-primary" @click="showAlert">Alert 보기</button>
+        <button type="button" class="btn btn-success" @click="otherAlert">다른 Alert 보기</button>
     </p>
     <p>
         <input type="text" v-model="num"> -> {{numFormat}}
         <br>
         <br>
-        <button type="button" @click="showPrototype">Prototype 확인</button>
+        <button type="button" class="btn btn-secondary" @click="showPrototype">Prototype 확인</button>
     </p>
 </template>
 

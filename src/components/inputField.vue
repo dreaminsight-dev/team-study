@@ -305,6 +305,6 @@ defineExpose({
 .input_wrap {display: inline-block; vertical-align: top;}
 .input_wrap.block {display: block !important;}
 textarea {resize: none;}
-.description {font-size: 12px; color: rgb(104, 104, 104);}
+.description {text-align: left; margin-bottom: 0; font-size: 12px; color: rgb(104, 104, 104);}
 .description.error {color: #f16868}
 </style>

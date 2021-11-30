@@ -118,8 +118,8 @@ section {width: 50%; display: inline-block; margin-bottom: 20px;}
     display: flex; flex-direction: row;  align-items: center; justify-content: center;
     background-color: rgb(74, 110, 211); color: #fff; font-size: 100px;
 }
-.ani-enter-active {animation: bounce .5s ease-out}
-.ani-leave-active {animation: bounce .5s ease-in reverse;}
+.ani-enter-active {animation: bounce .5s}
+.ani-leave-active {animation: bounce .5s reverse;}
 @keyframes bounce {
     0% {transform: scale(0); background-color: rgb(202, 47, 47);}
     80% {transform: scale(1.3)}

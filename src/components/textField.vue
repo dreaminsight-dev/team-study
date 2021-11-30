@@ -25,7 +25,9 @@ function focus() {
 
 import { defineExpose } from 'vue'
 
-defineExpose({focus})
+defineExpose({
+    focus
+})
 </script>
 
 <style scoped>
