@@ -25,8 +25,9 @@ import {
 } from 'vue'
 
 export default {
-    setup(props, context) {
-        console.log(context.attrs)
+    components: {},
+    setup(props, { attrs, slots, emit }) {
+        console.log(attrs)
         let list = ref([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         let num = 0
 

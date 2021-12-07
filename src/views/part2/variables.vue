@@ -5,8 +5,9 @@
     <p>coffee: {{coffee}}</p>
     <p>compued: {{changed}}</p>
     <p>lucky: {{lucky}}</p>
-
+    <div>{{num}}</div>
     <p>
+        <a ref="#" class="btn btn-success" @click.prevent="changeNum">num 바꾸기</a>&nbsp;
         <a ref="#" class="btn btn-success" @click.prevent="changeApple">apple 바꾸기</a>&nbsp;
         <a ref="#" class="btn btn-primary" @click.prevent="changeBall">ball 바꾸기</a>&nbsp;
         <a ref="#" class="btn btn-info" @click.prevent="changeCoffee">coffee 바꾸기</a>&nbsp;
@@ -137,7 +138,7 @@ import { useStore } from 'vuex'
 const store = useStore()
 
 const showVuex = () => {
-    const { state, getters, commit  } = {...store}
+    const { state, getters, commit } = store
 
     commit('setLucky', 77)
     console.log('getters', getters.getLucky)
@@ -146,7 +147,10 @@ const showVuex = () => {
 }
 
 const lucky = computed(() => store.state.lucky)
-
+const changeNum = () => {
+    num++
+    console.log(num)
+}
 </script>
 
 <style>

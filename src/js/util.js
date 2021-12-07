@@ -258,8 +258,6 @@ Array.prototype.distinct = function(any) {
 
 export default {
     install(app, options) {
-        // console.log(options)
-
         const util = {}
 
         util.alert = (msg) => {
@@ -280,5 +278,6 @@ export default {
 
         app.config.globalProperties.$util = util
         app.provide('util', util)
+        app.provide('aaaa', 'bbbbbb')
     }
 }

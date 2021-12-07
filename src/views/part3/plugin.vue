@@ -17,6 +17,7 @@ import { ref, inject, getCurrentInstance } from 'vue'
 
 const vue = getCurrentInstance()
 const util = inject('util')
+const aaaa = inject('aaaa')
 
 let num = ref(0)
 let numFormat = ref(0)
