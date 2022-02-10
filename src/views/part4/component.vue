@@ -53,7 +53,10 @@ import slotsTable from '@/components/slotsTable2'
 let text1 = ref('')
 let text2 = ref('')
 let form = ref(null)
-let rule = [v => !!v || '텍스트를 입력하세요!']
+let rule = [
+    v => !!v || '텍스트를 입력하세요!',
+    v => !(v != 0) || '0이상의 값을 입력해주세요.'
+]
 let movePageNum = ref('')
 const header = [
     {text: 'index'},

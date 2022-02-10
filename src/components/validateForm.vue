@@ -5,20 +5,14 @@
 </template>
 
 <script setup>
-import { useSlots, defineExpose, getCurrentInstance } from 'vue'
+import { defineExpose, getCurrentInstance } from 'vue'
 
 const ins = getCurrentInstance()
-const slots = useSlots()
 
 let checkState = true
 let firstElm = null
 
 const validate = () => {
-    // const slot = slots.default()
-
-    // console.log(slot[0].children[0].type)
-    // console.log(ins)
-
     checkState = true
     firstElm = null
 
