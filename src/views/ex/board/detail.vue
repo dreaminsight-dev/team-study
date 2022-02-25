@@ -1,44 +1,35 @@
 <template>
-    <table class="table table-grey table-striped">
-        <tbody>
-            <tr>
-                <th width="15%">제목</th>
-                <td>{{title}}</td>
-            </tr>
-            <tr>
-                <th>작성자</th>
-                <td>{{userName}}</td>
-            </tr>
-            <tr>
-                <th>내용</th>
-                <td v-html="content.replace(/\n/gi, '<br>')"></td>
-            </tr>
-        </tbody>
-    </table>
-    <div style="text-align: right">
-        <a href="#" class="btn btn-secondary" @click.prevent="cancel">취소</a>&nbsp;
-        <a href="#" class="btn btn-danger" @click.prevent="checkPwd('delete')">삭제</a>&nbsp;
-        <a href="#" class="btn btn-info" @click.prevent="checkPwd()">수정</a>
-    </div>
-
-    <div class="popup" v-show="popupShow">
-        <div class="popup-wrap">
-            <h5>비밀번호 확인</h5>
-            <div class="popup-body">
-                <input ref="pwdRef" type="password" class="form-control" v-model="pwd">
-            </div>
-            <div class="popup-foot">
-                <a href="#" class="btn btn-secondary" @click.prevent="closePopup">취소</a>
-                &nbsp;
-                <a href="#" class="btn btn-primary" @click.prevent="getPwdCheck">확인</a>
+    <transition appear name="slide-up" @after-leave="emit('detailClose')">
+        <div class="detail-wrap" v-show="popupShow">
+            <table class="table table-grey table-striped">
+                <tbody>
+                    <tr>
+                        <th width="15%">제목</th>
+                        <td>{{title}}</td>
+                    </tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td>{{userName}}</td>
+                    </tr>
+                    <tr>
+                        <th>내용</th>
+                        <td v-html="content.replace(/\n/gi, '<br>')"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="text-align: right">
+                <a href="#" class="btn btn-secondary" @click.prevent="cancel">취소</a>&nbsp;
+                <a href="#" class="btn btn-danger" @click.prevent="checkPwd('delete')">삭제</a>&nbsp;
+                <a href="#" class="btn btn-info" @click.prevent="checkPwd()">수정</a>
             </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script setup>
 import { ref, defineProps, defineEmits } from 'vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const props = defineProps({
     idx: {
@@ -46,15 +37,14 @@ const props = defineProps({
         required: true
     }
 })
-
-const emit = defineEmits()
+const router = useRouter()
+const emit = defineEmits(['detailClose'])
 
 let title = ref('')
 let userName = ref('')
 let content = ref('')
-let popupShow = ref(false)
-let pwd = ref('')
 let flag = ref('')
+let popupShow = ref(true)
 const pwdRef = ref()
 
 const getDetail = () => {
@@ -73,64 +63,24 @@ const getDetail = () => {
 }
 
 const checkPwd = (f) => {
-    popupShow.value = true
     flag.value = f
 
     setTimeout(() => {
         pwdRef.value.focus()
     }, 10)
-    console.log(pwdRef.value)
-}
-
-const getPwdCheck = async () => {
-    if (!pwd.value) {
-        alert('비밀번호를 입력해주세요.')
-        return
-    }
-
-    const idx = props.idx
-
-    const response = await axios.get(`https://studyapi.programrush.co.kr/study/getBoardPwdCheck?idx=${idx}&pwd=${pwd.value}`)
-    let { result } = response.data
-
-    if (result == 'success') {
-        if (flag.value == 'delete') {
-            const form = new FormData()
-
-            form.append('idx', idx)
-            form.append('pwd', pwd.value)
-
-            const res = await axios.post('https://studyapi.programrush.co.kr/study/setBoardDelete', form)
-
-            const { result } = res.data
-
-            if (result == 'success') {
-                alert('게시물이 삭제 되었습니다.')
-            }
-        }
-    } else {
-        alert('비밀번호를 확인해주세요.')
-    }
 }
 
 const cancel = () => {
-    emit('detailClose')
-}
-
-const closePopup = () => {
     popupShow.value = false
+    router.push('/ex/board')
 }
 
 getDetail()
 </script>
 
 <style scoped>
-.popup {
-    position: fixed; width: 100%; height: 100%; background-color: rgba(0, 0, 0, .5);
-    top: 0; left: 0; display: flex; flex-direction: row; align-items: center; justify-content: center
-}
-.popup-wrap {background-color: #fff; width: 300px; border-radius: 10px; overflow: hidden;}
-.popup-wrap h5 {background-color: rgb(121, 121, 121); color: #fff; padding: 15px}
-.popup-body {padding: 15px;}
-.popup-foot {padding: 15px; text-align: right; border-top: 1px solid rgb(121, 121, 121)}
+.detail-wrap {position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 100; padding: 15px; background-color: #fff;}
+
+.slide-up-enter-from, .slide-up-leave-to {transform: translateY(100%)}
+.slide-up-enter-active, .slide-up-leave-active {transition: transform .3s;}
 </style>
