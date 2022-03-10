@@ -7,11 +7,8 @@
         class="item"
         :key="`list-item-${item.idx}`"
         v-for="item in items">
-        <div class="item-box">
-          <div :class="['lazy',  !isLoaded && 'ani']" :style="{width: item.width, height: item.height + 'px'}">
-            <div v-if="!isLoaded">loading...</div>
-            <img :src="item.src" @load="loadComplete" v-show="isLoaded" />
-          </div>
+         <div class="item-box">
+          <image-lazy :scrollTop="scrollTop" height="240" :src="item.src" />
           <div>{{ item.name }}</div>
         </div>
       </div>
@@ -20,26 +17,55 @@
   <template v-else>
     <div class="no-data">등록된 이미지가 없습니다.</div>
   </template>
+
+  <a href="#" class="btn-write bg-primary" @click.prevent><i class="fa-solid fa-upload" /></a>
+
+  <drop-file-boxv v-if="showDropBox" />
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import dropFileBox from './component/dropFileBox'
+import imageLazy from './component/imageLazy'
 
 let isLoaded = ref(false)
+let showDropBox = ref(false)
+let page = ref(1)
+let pageSize = ref(10)
+let totalCount = ref(0)
+let totalPage = ref(0)
 
-let items = ref([
-  {
-    idx: 1,
-    name: '202203101654051189.jpg',
-    src: 'https://studyapi.programrush.co.kr/upload/202203101654051189.jpg',
-    width: '100%',
-    height: 260,
+let items = ref([])
+
+const getImageList = async () => {
+  const { result, data, totalCount } = await axios.get('https://studyapi.programrush.co.kr/study/getImageList', {
+    params: {
+      page: page.value,
+      pageSize: pageSize.value
+    }
+  }).then(response => response.data)
+
+  if (result == 'success') {
+    items.value = data.map(item => ({
+      idx: item.idx,
+      name: item.fileName,
+      src: 'https://studyapi.programrush.co.kr/upload/' + item.fileName,
+      width: '100%',
+      height: 260,
+    }))
   }
-])
+}
 
 const loadComplete = () => {
-  isLoaded.value = true
+  setTimeout(() => {
+    isLoaded.value = true
+  }, 3000)
 }
+
+onMounted(() => {
+  getImageList()
+})
 </script>
 
 <style scoped>
@@ -72,5 +98,9 @@ const loadComplete = () => {
   0% {background-position: 0% 100%}
   50% {background-position: 100% 0%}
   100% {background-position: 0% 100%}
+}
+
+.btn-write {
+  position: fixed; right: 20px; bottom: 20px; width: 60px; height: 60px; line-height: 60px; border-radius: 30px; color: #fff;
 }
 </style>

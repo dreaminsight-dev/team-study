@@ -6,8 +6,11 @@
     <div class="drop-area"
       @dragover.prevent
       @dropenter.prevent
-      @drop.prevent="fileDrop">
-      <input type="file" multiple hiddne="true" @change="setFiles" />
+      @drop.prevent="fileDrop"
+      @click="fileSelection">
+
+      <input ref="fileInput" id="fileInput" type="file" multiple @change="fileChange" />
+
       <div v-if="fileList.length == 0">업로드 할 파일을 올려 놓으세요.</div>
       <div v-else class="file-list">
         <div class="file-box" v-for="(item, i) in fileList" :key="`file-${i}`">
@@ -17,9 +20,11 @@
           <p class="file-box-name">{{ item.name }}</p>
         </div>
       </div>
+
       <transition name="fade">
         <div class="alert alert-danger" v-show="showAlert">파일은 최대 9개까지 등록 가능합니다.</div>
       </transition>
+
       <a href="#" class="btn btn-info" @click.prevent="uploading" v-if="fileList.length > 0">파일 업로드</a>
     </div>
   </div>
@@ -34,9 +39,14 @@ let uploadFiles = ref([])
 let fileList = ref([])
 let isLoaded = ref(false)
 let showAlert = ref(false)
+let fileInput = ref()
 
 const loadComplete = () => {
   isLoaded.value = true
+}
+
+const fileSelection = (evt) => {
+  fileInput.value.click()
 }
 
 const fileDrop = (evt) => {
