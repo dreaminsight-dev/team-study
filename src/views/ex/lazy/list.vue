@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-center my-10">Lazy 섬네일 게시판</h1>
+  <h1 class="text-center my-10">Lazy 썸네일 게시판</h1>
 
   <template v-if="items.length > 0">
     <div class="item-group">
@@ -8,8 +8,9 @@
         :key="`list-item-${item.idx}`"
         v-for="item in items">
         <div class="item-box">
-          <div class="lazy ani" :style="{width: item.width + 'px', height: item.height + 'px'}">
-            <div>loading...</div>
+          <div :class="['lazy',  !isLoaded && 'ani']" :style="{width: item.width, height: item.height + 'px'}">
+            <div v-if="!isLoaded">loading...</div>
+            <img :src="item.src" @load="loadComplete" v-show="isLoaded" />
           </div>
           <div>{{ item.name }}</div>
         </div>
@@ -24,12 +25,21 @@
 <script setup>
 import { ref } from 'vue'
 
-let items = ref(Array.from({length: 6}, (v, i) => ({
-  name: '이미지 목록 테스트 ' + (i + 1),
-  src: '',
-  width: '100%',
-  height: '260'
-})))
+let isLoaded = ref(false)
+
+let items = ref([
+  {
+    idx: 1,
+    name: '202203101654051189.jpg',
+    src: 'https://studyapi.programrush.co.kr/upload/202203101654051189.jpg',
+    width: '100%',
+    height: 260,
+  }
+])
+
+const loadComplete = () => {
+  isLoaded.value = true
+}
 </script>
 
 <style scoped>
@@ -57,6 +67,7 @@ let items = ref(Array.from({length: 6}, (v, i) => ({
   background-size: 200% 200%;
   color: #fff;
 }
+.lazy img {width: 100%}
 @keyframes bg {
   0% {background-position: 0% 100%}
   50% {background-position: 100% 0%}
