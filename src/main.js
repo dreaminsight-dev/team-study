@@ -16,4 +16,6 @@ app
 // route v4.x changed (라우터가 많은 경우 로드가 완료 되는 시점에 앱이 활성화 되도록 처리)
 async () => await router.isReady()
 
+import '@/assets/css/common.css'
+
 app.mount('#app')

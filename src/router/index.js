@@ -20,6 +20,10 @@ const routes = [
     {path: '/ex/todo', name: 'ex/todo', component: () => import('@/views/ex/todo')},
     {path: '/ex/board/', name: 'ex/board/list', component: () => import('@/views/ex/board/list')},
     {path: '/ex/board/:type/:idx', name: 'ex/board/detail', component: () => import('@/views/ex/board/list')},
+
+    {path: '/ex/lazy/list', name: 'ex/lazy/list', component: () => import('@/views/ex/lazy/list')},
+
+    {path: '/my/lazy/list', name: 'my/lazy/list', component: () => import('@/views/my/lazy/list')},
 ]
 
 const router = createRouter({

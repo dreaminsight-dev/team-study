@@ -64,7 +64,7 @@ const menuToggle = (index) => {
 
 <style scoped>
 #content {padding: 20px;}
-ul {list-style: none; display: flex; flex-direction: row; position: relative; z-index: 100;}
+ul {list-style: none; display: flex; flex-direction: row; position: relative; z-index: 100; margin: 0; padding: 0;}
 ul li {
     text-align: center; border: 1px solid rgb(145, 145, 145);
     height: 40px; box-sizing: border-box; width: 190px; position: relative;
